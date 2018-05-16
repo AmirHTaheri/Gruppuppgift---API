@@ -27,6 +27,13 @@ class TodoController
         return $getAll->fetchAll();
     }
 
+    public function getLast20Entries()
+    {
+        $getAll = $this->db->prepare('SELECT * FROM (SELECT * FROM entries ORDER BY entryID DESC LIMIT 20) as r ORDER BY entryID');
+        $getAll->execute();
+        return $getAll->fetchAll();
+    }
+
     public function getAllFromUsers()
     {
         $getAll = $this->db->prepare('SELECT * FROM users');
@@ -50,29 +57,49 @@ class TodoController
         return $getOne->fetch();
     }
 
-    public function add($todo)
+
+    /****************************************/
+    /* Post */
+    /****************************************/
+
+    // Add a user
+    public function addUser($todo)
     {
-        /**
-         * Default 'completed' is false so we only need to insert the 'content'
-         */
         $addOne = $this->db->prepare(
-            'INSERT INTO todos (content) VALUES (:content)'
+            'INSERT INTO users (username, password) VALUES (:username, :password)'
         );
 
-        /**
-         * Insert the value from the parameter into the database
-         */
-        $addOne->execute([':content'  => $todo['content']]);
-
-        /**
-         * A INSERT INTO does not return the created object. If we want to return it to the user
-         * that has posted the todo we must build it ourself or fetch it after we have inserted it
-         * We can always get the last inserted row in a database by calling 'lastInsertId()'-function
-         */
+        $hashed = password_hash($todo['password'], PASSWORD_DEFAULT);
+        $addOne->execute([
+          ':username'  => $todo['username'],
+          'password' => $hashed
+        ]);
         return [
           'id'          => (int)$this->db->lastInsertId(),
-          'content'     => $todo['content'],
-          'completed'   => false
+          'username'     => $todo['username']
         ];
     }
+
+    // Add an entry
+    public function addEntry($todo)
+    {
+        $addOne = $this->db->prepare(
+            'INSERT INTO entries (`title`, `content`, `createdBy`, `createdAt`) VALUES (:title, :content, :createdBy, :createdAt)'
+        );
+
+        $hashed = password_hash($todo['password'], PASSWORD_DEFAULT);
+        $addOne->execute([
+          ':title'  => $todo['title'],
+          ':content'  => $todo['content'],
+          ':createdBy'  => $todo['createdBy'],
+          ':createdAt'  => $todo['createdAt']
+        ]);
+        return [
+          'entryID'      => (int)$this->db->lastInsertId(),
+          'title'     => $todo['title'],
+          'content'     => $todo['content'],
+          'createdAt'     => $todo['createdAt'],
+        ];
+    }
+
 }

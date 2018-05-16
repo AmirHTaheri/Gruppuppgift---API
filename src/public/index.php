@@ -77,13 +77,22 @@ $app->get('/logout', function ($request, $response, $args) {
  */
 $app->group('/api', function () use ($app) {
 
-  // GET http://localhost:XXXX/api/todos
-  $app->get('/posts', function ($request, $response, $args) {
+  // GET http://localhost:XXXX/api/entries
+  //List all entries
+  $app->get('/entries', function ($request, $response, $args) {
       $allTodos = $this->todos->getAll();
       return $response->withJson(['data' => $allTodos]);
   });
 
+  // GET http://localhost:XXXX/api/todos
+  // List the last 20 entries
+  $app->get('/getLast20Entries', function ($request, $response, $args) {
+      $allTodos = $this->todos->getLast20Entries();
+      return $response->withJson(['data' => $allTodos]);
+  });
+
   // GET http://localhost:XXXX/api/users
+  // List all users
   $app->get('/users', function ($request, $response, $args) {
       $allTodos = $this->todos->getAllFromUsers();
       return $response->withJson(['data' => $allTodos]);
@@ -96,12 +105,30 @@ $app->group('/api', function () use ($app) {
       return $response->withJson(['data' => $singleTodo]);
   });
 
-    // POST http://localhost:XXXX/api/todos
-    $app->post('/todos', function ($request, $response, $args) {
-        $body = $request->getParsedBody();
-        $newTodo = $this->todos->add($body);
-        return $response->withJson(['data' => $newTodo]);
-    });
+
+  /****************************************/
+  /* Post */
+  /****************************************/
+
+  // POST http://localhost:XXXX/api/todos
+  // Post an entry POST /api/addUser
+  $app->post('/addUser', function ($request, $response, $args) {
+      $body = $request->getParsedBody();
+      $newTodo = $this->todos->addUser($body);
+      return $response->withJson(['data' => $newTodo]);
+  });
+
+  // POST http://localhost:XXXX/api/todos
+  // Post an entry POST /api/entries
+  $app->post('/addEntry', function ($request, $response, $args) {
+      $body = $request->getParsedBody();
+      $newTodo = $this->todos->addEntry($body);
+      return $response->withJson(['data' => $newTodo]);
+  });
+
+
+
+
 });
 
 $app->run();
