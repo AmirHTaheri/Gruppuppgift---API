@@ -22,15 +22,31 @@ class TodoController
 
     public function getAll()
     {
-        $getAll = $this->db->prepare('SELECT * FROM todos');
+        $getAll = $this->db->prepare('SELECT * FROM entries');
         $getAll->execute();
         return $getAll->fetchAll();
     }
 
-    public function getOne($id)
+    public function getAllFromUsers()
     {
-        $getOne = $this->db->prepare('SELECT * FROM todos WHERE id = :id');
-        $getOne->execute([':id' => $id]);
+        $getAll = $this->db->prepare('SELECT * FROM users');
+        $getAll->execute();
+        return $getAll->fetchAll();
+    }
+
+    public function getOne($table,$id)
+    {
+      $tableID = "";
+      if ($table == 'entries') {
+        $tableID = "entryID";
+      }
+      elseif ($table == 'users') {
+        $tableID = 'userID';
+      }
+        $getOne = $this->db->prepare("SELECT * FROM $table WHERE $tableID = :id");
+        $getOne->execute([
+          ':id' => $id
+        ]);
         return $getOne->fetch();
     }
 
