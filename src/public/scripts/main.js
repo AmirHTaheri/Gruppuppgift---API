@@ -1,7 +1,7 @@
 async function main() {
-  const response = await fetch('/todos/1');
+  const response = await fetch('api/entries');
   const { data } = await response.json();
   console.log(data);
 }
 
-main();
+//main();

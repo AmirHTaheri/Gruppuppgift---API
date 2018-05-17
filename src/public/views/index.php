@@ -11,6 +11,19 @@
 
 <body>
   <h1>Hello from the Frontend!</h1>
+  <main class="main-wrapper">
+    <section class="section-wrapper">
+
+      <input type="submit" onclick="main()" name="btn" value="Shoot">
+
+    </section>
+
+  </main>
+
+
+
+
+
   <script src="scripts/main.js"></script>
 </body>
 
