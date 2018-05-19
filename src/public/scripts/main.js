@@ -1,18 +1,103 @@
-/*async function main() {
-  const response = await fetch('api/entries');
-  const { data } = await response.json();
-  console.log(data);
-}
+$(document).ready(function() {
+  // Global variabes
+  var col = [];
+  var routes = ["api/entries",
+  "api/getLast20Entries",
+  "api/users"];
 
-//main();*/
+  async function main() {
+    routes.forEach(function(rout){
+      fetch(rout).
+      then((response) => response.json()).
+      then(function(entries) {
+        createTable(entries,rout);
+        //debugger;
+      });
 
-async function main() {
-  fetch('api/entries').
-  then((response) => response.json()).
-  then(function(data){
-    debugger;
-    console.log(data[1].toString());
     });
-}
+  }
 
-main();
+
+  function createTable(entries, rout) {
+    var i;
+    col = [];
+
+    for (i = 0; i < entries.data.length; i++) {
+      let data = entries.data[i];
+      for (var key in data) {
+        if (data.hasOwnProperty(key)) {
+          if (col.indexOf(key) === -1) {
+            col.push(key);
+          }
+
+        }
+      }
+    }
+
+    // H1
+    var h1 = document.createElement("h1");
+    var text;
+    if(rout=="api/entries")
+    text = "All Entries";
+    else if(rout == "api/getLast20Entries")
+    text = "Last 20 entries";
+    else if(rout == "api/users")
+    text = "All users";
+    else {
+      text = "Unknown";
+    }
+
+    var t = document.createTextNode(text);
+    h1.appendChild(t);
+
+    var myContainer = document.getElementById("myContainer");
+    myContainer.appendChild(h1);
+
+
+
+    // Create table
+    var table = document.createElement("table");
+    table.setAttribute("class", "tablesorter");
+    table.classList.add('table');
+    table.classList.add('table-hover');
+    table.classList.add('table-responsive');
+
+    table.setAttribute("id", "myTable");
+    var thead = table.createTHead();
+    thead.setAttribute("class", "thead-light");
+
+    var row = thead.insertRow(-1);
+    var cell;
+
+    for (i = 0; i < col.length; i++) {
+      //debugger;
+      var test = col[i];
+      cell = row.insertCell(-1);
+      cell.innerHTML = col[i];
+    }
+
+    var tBody = document.createElement("tbody");
+    table.appendChild(tBody);
+    //debugger;
+
+    var wedData = entries.data;
+
+    for (var j = 0; j < wedData.length; j++) {
+      row = tBody.insertRow(-1);
+      for (i = 0; i < col.length; i++) {
+        cell = row.insertCell(-1);
+        cell.innerHTML = wedData[j][col[i]];
+      }
+    }
+
+
+    debugger;
+    myContainer.appendChild(table);
+
+  };
+
+
+  // Global
+  main();
+});
+//main();
