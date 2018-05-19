@@ -5,6 +5,8 @@ $(document).ready(function() {
   "api/getLast20Entries",
   "api/users"];
 
+
+  /* A generic function which goes through the Web APAI, create a table for them and fill them!*/
   async function main() {
     routes.forEach(function(rout){
       fetch(rout).
