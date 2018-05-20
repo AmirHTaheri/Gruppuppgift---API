@@ -28,6 +28,23 @@
       <div id="myContainer" class="container">
       </div>
     </section>
+    <section class="section-wrapper">
+      <h1>Add a user</h1>
+        <div class="section-row">
+            <div class="col-1-2">
+              <label for="name">User name*</label><br>
+              <label for="number">Password*</label><br>
+            </div>
+            <div class="col-1-2">
+              <input type="text" name="name" id="username" ><br>
+              <input type="password" name="number" id="password" ><br>
+              <input type="submit" class="submit" onclick="addUser()"  value="Add user">
+
+                <form class="contact-form" method="GET">
+                </form>
+            </div>
+        </div>
+    </section>
   </main>
 </body>
 <script src="scripts/jquery-latest.js"></script>
@@ -35,5 +52,7 @@
 <script src="scripts/jquery.tablesorter.pager.js"></script>
 <script src="scripts/main.js"></script>
 
+<footer class="footer-wrapper">
+</footer>
 
 </html>
