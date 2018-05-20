@@ -22,21 +22,21 @@ class TodoController
 
     public function getAll()
     {
-        $getAll = $this->db->prepare('SELECT * FROM entries');
+        $getAll = $this->db->prepare('SELECT entries.entryID, entries.title, entries.content, users.username, entries.createdAt FROM entries INNER JOIN users ON entries.createdBy = users.userID');
         $getAll->execute();
         return $getAll->fetchAll();
     }
 
     public function getLast20Entries()
     {
-        $getAll = $this->db->prepare('SELECT * FROM (SELECT * FROM entries ORDER BY entryID DESC LIMIT 20) as r ORDER BY entryID');
+        $getAll = $this->db->prepare('SELECT * FROM (SELECT entries.entryID, entries.title, entries.content, users.username, entries.createdAt FROM entries INNER JOIN users ON entries.createdBy = users.userID ORDER BY entryID DESC LIMIT 20) as r ORDER BY entryID');
         $getAll->execute();
         return $getAll->fetchAll();
     }
 
     public function getAllFromUsers()
     {
-        $getAll = $this->db->prepare('SELECT * FROM users');
+        $getAll = $this->db->prepare('SELECT `userID`,`username`,`createdAt` FROM `users`');
         $getAll->execute();
         return $getAll->fetchAll();
     }
