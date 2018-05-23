@@ -118,7 +118,7 @@ function addUser() {
   // x-www-form-urlencoded
     const formData = new FormData();
     const todoInput = document.getElementById('todoInput');
-    formData.append('usrname', username);
+    formData.append('username', username);
     formData.append('password', password);
 
     const postOptions = {
@@ -127,10 +127,11 @@ function addUser() {
       // MUCH IMPORTANCE!
       credentials: 'include'
     }
-    debugger;
+    //debugger;
     fetch('api/addUser', postOptions)
       .then(res => res.json())
-      .then(console.log("success"));
+      .then(console.log)
+      .then(location.reload());
 
 }
 
