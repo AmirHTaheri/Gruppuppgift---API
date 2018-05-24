@@ -134,16 +134,15 @@ function addUser() {
 }
 
 function addEntry(){
-  debugger
   var title = document.getElementById("title").value;
-  var comment = document.getElementById("comment").value;
+  var content = document.getElementById("comment").value;
 
   var time = new Date();
 
   // x-www-form-urlencoded
     const formData = new FormData();
     formData.append('title', title);
-    formData.append('comment', comment);
+    formData.append('content', content);
     //formData.append('createdAt', time);
     //formData.append('createdBy', 1);
 
@@ -156,7 +155,7 @@ function addEntry(){
 
     let data = {
         'title': title,
-        'comment':comment,
+        'content':content,
         'createdBy': 1
     }
     // The parameters we are gonna pass to the fetch function
@@ -167,7 +166,7 @@ function addEntry(){
     }*/
 
     //debugger;
-    fetch('/addEntry', postOptions  )
+    fetch('/api/addEntry', postOptions  )
       .then(res => res.text())
       .then(console.log)
       .then(location.reload());

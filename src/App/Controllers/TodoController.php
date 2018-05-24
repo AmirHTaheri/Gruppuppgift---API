@@ -94,7 +94,7 @@ class TodoController
             'INSERT INTO entries (`title`, `content`, `createdBy`, `createdAt`) VALUES (:title, :content, :createdBy, :createdAt)'
         );
 
-        $date = date("Y-m-d");
+        $date = date("Y-m-d H:i:s");
         $addOne->execute([
           ':title'  => $todo['title'],
           ':content'  => $todo['content'],
@@ -105,7 +105,7 @@ class TodoController
           'entryID'      => (int)$this->db->lastInsertId(),
           'title'     => $todo['title'],
           'content'     => $todo['content'],
-          'createdAt'     => $todo['createdAt'],
+          'createdAt'     => $date,
         ];
     }
 
