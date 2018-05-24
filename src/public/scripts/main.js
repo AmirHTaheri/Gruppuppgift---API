@@ -3,7 +3,8 @@ $(document).ready(function() {
   var col = [];
   var routes = ["api/entries",
     "api/getLast20Entries",
-    "api/users"
+    "api/users",
+    "api/comments"
   ];
 /*
   var username = document.getElementById("username");
@@ -48,7 +49,9 @@ $(document).ready(function() {
     else if (rout == "api/getLast20Entries")
       text = "Last 20 entries";
     else if (rout == "api/users")
-      text = "All users";
+        text = "All users";
+    else if (rout == "api/comments")
+        text = "All comments";
     else {
       text = "Unknown";
     }
@@ -110,11 +113,6 @@ function addUser() {
   var username = document.getElementById("username").value;
   var password = document.getElementById("password").value;
 
-  let data = {
-    usrname: document.getElementById("username").value,
-    password: document.getElementById("password").value
-  }
-
   // x-www-form-urlencoded
     const formData = new FormData();
     const todoInput = document.getElementById('todoInput');
@@ -134,6 +132,48 @@ function addUser() {
       .then(location.reload());
 
 }
+
+function addEntry(){
+  var title = document.getElementById("title").value;
+  var content = document.getElementById("comment").value;
+
+  var time = new Date();
+
+  // x-www-form-urlencoded
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('content', content);
+    //formData.append('createdAt', time);
+    //formData.append('createdBy', 1);
+
+    const postOptions = {
+      method: 'POST',
+      body: formData,
+      // MUCH IMPORTANCE!
+      credentials: 'include'
+    }
+
+    let data = {
+        'title': title,
+        'content':content,
+        'createdBy': 1
+    }
+    // The parameters we are gonna pass to the fetch function
+    /*let fetchData = {
+        method: 'POST',
+        body: data,
+        headers: new Headers()
+    }*/
+
+    //debugger;
+    fetch('/api/addEntry', postOptions  )
+      .then(res => res.text())
+      .then(console.log)
+      .then(location.reload());
+
+  }
+
+
 
 
 
