@@ -20,9 +20,16 @@ class TodoController
         $this->db = $pdo;
     }
 
-    public function getAll()
+    public function getAllEntries()
     {
         $getAll = $this->db->prepare('SELECT entries.entryID, entries.title, entries.content, users.username, entries.createdAt FROM entries INNER JOIN users ON entries.createdBy = users.userID');
+        $getAll->execute();
+        return $getAll->fetchAll();
+    }
+
+    public function getAllComments()
+    {
+        $getAll = $this->db->prepare('SELECT comments.commentID, comments.content, comments.createdAt, comments.createdBy FROM comments');
         $getAll->execute();
         return $getAll->fetchAll();
     }
@@ -34,7 +41,7 @@ class TodoController
         return $getAll->fetchAll();
     }
 
-    public function getAllFromUsers()
+    public function getAllUsers()
     {
         $getAll = $this->db->prepare('SELECT `userID`,`username`,`createdAt` FROM `users`');
         $getAll->execute();
@@ -87,12 +94,12 @@ class TodoController
             'INSERT INTO entries (`title`, `content`, `createdBy`, `createdAt`) VALUES (:title, :content, :createdBy, :createdAt)'
         );
 
-        $hashed = password_hash($todo['password'], PASSWORD_DEFAULT);
+        $date = date("Y-m-d");
         $addOne->execute([
           ':title'  => $todo['title'],
           ':content'  => $todo['content'],
-          ':createdBy'  => $todo['createdBy'],
-          ':createdAt'  => $todo['createdAt']
+          ':createdBy'  => 1,
+          ':createdAt'  => $date
         ]);
         return [
           'entryID'      => (int)$this->db->lastInsertId(),

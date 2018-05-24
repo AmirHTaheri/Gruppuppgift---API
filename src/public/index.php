@@ -80,7 +80,7 @@ $app->group('/api', function () use ($app) {
   // GET http://localhost:XXXX/api/entries
   //List all entries
   $app->get('/entries', function ($request, $response, $args) {
-      $allTodos = $this->todos->getAll();
+      $allTodos = $this->todos->getAllEntries();
       return $response->withJson(['data' => $allTodos]);
   });
 
@@ -94,9 +94,17 @@ $app->group('/api', function () use ($app) {
   // GET http://localhost:XXXX/api/users
   // List all users
   $app->get('/users', function ($request, $response, $args) {
-      $allTodos = $this->todos->getAllFromUsers();
+      $allTodos = $this->todos->getAllUsers();
       return $response->withJson(['data' => $allTodos]);
   });
+
+  // GET http://localhost:XXXX/api/users
+  // List all users
+  $app->get('/comments', function ($request, $response, $args) {
+      $allTodos = $this->todos->getAllComments();
+      return $response->withJson(['data' => $allTodos]);
+  });
+
   // GET http://localhost:XXXX/api/[table]/id
   $app->get('/{table}/{id}', function ($request, $response, $args) {
       $id = $args['id'];
